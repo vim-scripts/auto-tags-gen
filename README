@@ -1,0 +1,49 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=4627
+
+Plug-in for creating tags with ctags
+in the current working directory of the currently opened
+buffer (file), automatically, when you save your file.
+
+This plug-in works with C/C++ files only.
+
+Works in the current working directory. It can include
+sub-directories as well. You can generate tags files automatically for easy access through Omni Completions,
+and facilitate the plug-in that depends on a tags file.
+
+You can even create tags file in any directory without
+saving a file.
+
+For example: code_complete.vim (by Mingbai),
+             echofunc.vim (by Mingbai), plug-ins rely on a
+             tags file in the working directory
+             and the include directories added to vim's search list.
+
+All of this is specified within a simple text file based plug-in script
+(auto_tags_gen.vim) with a few global variables and
+a shared library (auto_tag_gen.dll). On linux the plug-in is auto_tags_gen_linux.vim and the shared library is libauto_tag_gen.so.
+
+Written For Vim version 7.4. May work with older
+versions as well as the future releases also.
+
+    Tested with Vim 32-bit on Windows XP/7 32-bit, Windows 7 64-bit (vim 32-bit),
+    may work with Vim 64-bit on Windows 64-bit.
+    Now it works on Linux. Tested in ubuntu 13.10 (Saucy) (Gvim from its repository).
+
+
+You must set 'nocompatible' in your _vimrc file to use this plug-in. You can
+stop the plug-in from being loaded by setting the
+"loaded_auto_tag_generator" variable:
+
+	:let loaded_auto_tag_generator = 0
+
+in your _vimrc file.
+You can also put these lines for your convenience:
+
+set nocompatible
+filetype on
+filetype plugin on
+set number
+set laststatus=2
+:set timeout timeoutlen=4500 "   ttimeoutlen=100 "  default settings -1 not harmed under comment
+set history=100 " tons of command-line history. Can be used with up-dn arrow key
+
