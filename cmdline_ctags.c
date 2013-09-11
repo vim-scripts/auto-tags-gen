@@ -1,4 +1,4 @@
-// Last Change: 2013-06-24 11:56:40
+// Last Change: 2013-09-10 22:59:12
 /**< Vim plugin to create tags file silently, for the opened file's directory.
  *< Can add directory recursively. This is a shared lib plugin.
  *< Use it along with the vimscript provided.
@@ -56,7 +56,7 @@ void tag_creator_engine(int job) {
 }
 
 
-/* Version 0.0.02-win32 */
+/* Version 0.0.03-win32 */
 /* NOTE: Don't use __stdcall or __fastcall or any other calling convention.
  * Use only __cdecl calling convention.
  * Don't use Dll APIENTRY point, like
