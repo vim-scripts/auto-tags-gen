@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<makefile>
+    <dll id="auto_tag_gen">
+        <sources>cmdline_ctags.c</sources>
+        <so_version>1.0.3</so_version>
+        <libname>auto_tag_gen</libname>
+        <dllname>auto_tag_gen</dllname>
+        <install-to>~/.vim/plugin</install-to>
+    </dll>
+</makefile>

@@ -1,0 +1,408 @@
+*auto_tags_gen.txt*                        |auto_tags_gen|  |auto_tags_gen-plugin|
+    Plug-in for creating tags with |ctags|
+    in the current working directory of the currently opened
+    buffer (file), automatically.
+    Written For Vim version 7.4. May work with older
+    versions as well as the future releases also.
+
+    Tested with Vim 32-bit on Windows XP/7 32-bit, Windows 7 64-bit (vim 32-bit),
+    may work with Vim 64-bit on Windows 64-bit.
+    Now it works on Linux. Tested in ubuntu 13.04 (Gvim from its repository).
+
+
+	Last Change: 2014-01-27  Monday: 02:27:40 AM
+
+	Version 0.0.04-win32-linux (2014-01-27  Monday: 02:27:40 AM)
+
+
+	  By Pinaki Sekhar Gupta <appugupta007@yahoo.co.in>,<appugupta007@gmail.com>
+	  (Don't mail me unless it becomes necessary, discuss everything
+	  at the Vim-Wiki, click at the top of the plugin's page)
+
+			*auto_tags_gen*      *auto_tags_gen-plugin*
+	Contents:
+
+		Menu...................|auto_tags_gen-menu|
+		Menu...................|auto_tags_gen-prerequisites|
+		Caution................|auto_tags_gen-caution|
+		Settings...............|auto_tags_gen-settings|
+		                              |Option_0|
+                                              |Option_1|
+                                              |Option_2|
+                                              |Option_3|
+                                              |Option_4|
+                                              |Force_Now|
+
+		Examples................|auto_tags_gen-example|
+
+		Guides to generate tags
+		in the include directories
+		with a batch file (additional).........|auto_tags_gen-guides|
+
+		Tips...........................|auto_tags_gen-tips|
+		                              |path_name-SFN|
+
+		Licence........................|auto_tags_gen-Licence|
+
+
+You can use this plugin's basic functionality to set up automatically
+tags file creation using ctags.exe.
+This plug-in works in the current working directory and include directories
+as well. Generate tags files automatically for easy access
+through Omni completions, and facilitate the plug-in that depends on a tags file.
+
+For example: code_complete.vim (by Mingbai),
+             echofunc.vim (by Mingbai), plugins rely on a
+             tags file in the working directory
+             and the include directories added to vim's search list.
+
+All of this is specified within a simple text file based plug-in script
+(auto_tags_gen.vim) with a few global variables and
+a shared library (auto_tag_gen.dll).
+
+I assume that you know how to add directories (mainly header directories)
+to Vim's search list. If you don't know, I will tell you how to do so.
+
+You must set 'nocompatible' in your |vimrc| file to use this plug-in. You can
+stop the plug-in from being loaded by setting the
+"loaded_auto_tag_generator" variable: >
+
+	:let loaded_auto_tag_generator = 0
+
+in your |vimrc| file.
+You can also put these lines for your convenience:
+
+filetype on
+filetype plugin on
+set number
+set laststatus=2
+:set timeout timeoutlen=4500 "   ttimeoutlen=100 "  default settings -1 not harmed under comment
+set history=100 " tons of command-line history. Can be used with up-dn arrow key
+
+
+==============================================================================
+MENU						    *auto_tags_gen-menu*
+
+This plug-in is mapped into Menu Bar -> Plugin -> auto tags gen C/C++.
+By Default This plug-in is loaded, and loads the default option 0.
+You can change this from the menu according to your needs.
+
+==============================================================================
+PREREQUISITES                     *auto_tags_gen-prerequisites*
+Before doing anything download |Exuberant_ctags| from
+ http://ctags.sourceforge.net.
+Put |ctags|.exe into C:\WINDOWS\system32 (for Windows XP only)
+or, create a folder for ctags and finally add this folder to path, by
+r-clicking at My Computer -> Properties -> Advanced -> Environment Variables
+-> System Variables -> Path. (XP)
+or,
+r-clicking at Computer -> Advanced System Settings -> System Properties
+-> Advanced tab -> Environment Variables
+-> System Variables -> Path. (Win7)
+
+But I recommend to put this stuff into system32 instead of cluttering up
+the System Path, if you are using XP, otherwise follow the second method (for Win7).
+
+Ubuntu users should download ctags from the software centre or
+via synaptic package manager.
+
+Using 7-zip extract "auto_tag_gen_v0.00.04win32.7z" to any location
+of your preference. This contains source code for the shared library and the
+makefiles for different targets and compilers, plus "auto_tag_gen.zip".
+
+At this time it supports 3 compilers on Windows:- mingw, tiny C, Visual Studio.
+This project relies on bakefile (http://www.bakefile.org). The project also includes
+bakefile scripts. If you want to create your own makefile then you can also
+use it but its not required to build the project,
+since it already includes the makefiles required to build.
+The makefiles have been created using bakefile.
+
+Extract "auto_tag_gen.zip" and put the stuffs in their respective
+locations, e.g. 'auto_tags_gen.txt' to C:\Program Files\vim\vim73\doc
+'auto_tag_gen.dll' and 'auto_tags_gen.vim' to
+C:\Program Files\vim\vim73\plugin
+
+or,
+
+In ubuntu linux,
+extract and enter the directory from gnome-terminal where the Makefile is contained,
+type
+sudo make install
+Now copy the 'auto_tags_gen_linux.vim' into ~/.vim/plugin
+such as:  /home/your_username/.vim/plugin
+copy 'auto_tags_gen.txt' into ~/.vim/doc such as:  /home/your_username/.vim/doc
+
+
+==============================================================================
+CAUTION						 *auto_tags_gen-caution*
+
+CAUTION:: On Windows, this plugin kills all the running 'cmd.exe' at the background
+to prevent running several ctags process targeting the same 'tags'.
+This has some obvious advantages but a precaution is necessary.
+Means if you are doing very important tasks via 'cmd.exe' such as compiling etc.,
+then do not use this plugin, as it would interrupt your task by killing it midway.
+This plugin does not work with console version of vim,
+and you should not try to integrate the plugin with the console version of vim
+as it would kill the vim itself by killing the 'cmd.exe'.
+Only use GVim in Windows.
+
+On linux you don't have to worry about it.
+
+==============================================================================
+SETTINGS						 *auto_tags_gen-settings*
+
+                                                                    |Option_0|
+                                                                    |Option_1|
+                                                                    |Option_2|
+                                                                    |Option_3|
+                                                                    |Option_4|
+
+
+                                                                   *Option_0*
+  o  Option 0 :-  de-activate
+               This option means do not generate tags automatically.
+                                                                   *Option_1*
+  o  Option 1 :-  recursive (-R). For working directory.
+               Use this option when you need to generate tags in the
+               current directory including all the sub-directories automatically
+               as you save (write the buffer to file).
+               Don't use this option while working on a large file contained
+               directory, as this may take considerable time to complete tags
+               generation. Use second option instead.
+               Or, you can create a bath file to create the tags
+               when you think its needed, or use |Force_Now| option instead.
+
+                                                                   *Option_2*
+  o  Option 2 :-  non-recursive. For working directory.
+               This option means, generate tags in the current file's directory,
+               but don't include any sub-directory.
+               ===================================
+                                                                   *Option_3*
+  o  Option 3 :-  for <include> directory.
+               Sometimes you may work on a project to develop your own library.
+               And you may need the library as a common utility for other projects.
+               And you put the files in a special include directory.
+               Use this option then.
+               Usually you can create tags file with the help of a batch file
+               in the working directory, as: >
+      ctags -R --c-kinds=+pxfvtcdeglmnsu
+      --c++-kinds=+pxfvtcdeglmnsu
+      --languages=C,C++ --langmap=C:.c.h
+      --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx
+      --fields=+iaSm --extra=+qf -f tags *
+-
+              ** (In a real batch, write the lines combined into one line.)
+
+               But in the system header directory there may be a large number of
+               headers. If you use -R to recursively add all the sub-directories,
+               this may create a huge sized |tags| file,
+               I saw a |tags| about 8GB, in a machine,
+               in the MinGW's include directory.
+               Moreover, it will not include the extension-less headers like,
+               <iostream>, <cstdlib> etc.
+               The following batch file is ideal for creating tags
+               in such situations: >
+
+        ctags --c-kinds=+pxfvtcdeglmnsu
+        --c++-kinds=+pxfvtcdeglmnsu
+        --languages=C,C++ --langmap=C:.c.h
+        --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx.
+        --fields=+iaSm --extra=+qf -f tags *
+-
+               Notice the dot  .  at the end of .hxx in the 4th line. Also note
+               the absence of '-R'. >
+               (In a real batch, write the lines combined into one line.)
+-
+               This tells |ctags| to not include the sub-directories,
+               and do not skip the extension-less headers.
+
+               This option saves the same purpose. This generates tags file
+               immediately after saving the file,
+               not including any sub-directory, not skipping any
+               extension-less header.
+
+               You should use this option only when you are creating or
+               editing your own header files to create your own library.
+
+                                                                   *Option_4*
+  o  Option 4 :-  for <include> directory (recursively).
+               This acts the same way as option 3, but includes
+               all the sub-directories.
+
+               You should use this option only when you are creating or
+               editing your own header files to create your own library,
+               but want to store all the information in a single tags file,
+               outside all the sub-directories by already including them
+               recursively. This option also does not skip any
+               extension-less header.
+                  =============================================    *Force_Now*
+  o  Force Now with Option 1 :- Creates |tags| without modifying the
+                                 file being edited or saved.
+                                 Open a file in Vim, choose this option
+                                 to generate tags in the directory of
+                                 the opened file including all the
+                                 sub-directories.
+
+                                 You don't have to save any file.
+                                 Just choose this option to create a tags
+                                 file. This option is not for any
+                                 automatic tags creation, this is a manual option,
+                                 simply use this when you disable automatic
+                                 function of this plug-in (option 0:- de-activate)
+                                 and want to generate tags when needed,
+                                 e.g., in a large directory.
+
+                                 You can also use manual option when any auto
+                                 option is selected side by side.
+
+  o  Force Now with Option 2 to 4 :- Similar to the above with the
+                                     respective options.
+
+   Note: You can choose 'Force Now' options in your compiler's header directory
+         also, to avoid writing a separate batch file for merely a tags
+         file creation.
+
+==============================================================================
+EXAMPLES						    *auto_tags_gen-example*
+
+1) Say you are working in D:\codes\project01, and you have some files there.
+   This directory also contains sub-directories. If this project01 folder is
+   not too large in terms of number of files also in terms of size, Choose
+   Option 1. As you change the file you are editing, you will usually
+   save the file.
+   Saving the file will invoke this shared-library (auto_tag_gen.dll)
+   to generate tags recursively.
+
+2) If you are working on a library project of your own,
+   and you don't want to take any sub-directory into account,
+   choose option 3.
+
+3) You can open a file from your compiler's <include> directory, (e.g., stdio.h),
+   and choose 'Force Now with option 3'.
+==============================================================================
+GUIDES TO GENERATE TAGS				     *auto_tags_gen-guides*
+    Here you will see how to generate tags in the compiler's include directory
+    and informing Vim to search the tags file from there.
+    For example, look at the MinGW's include directory.
+    In my case the essential include directories of MinGW are: >
+ 1) C:\CodeBlocks\MinGW\include\
+ 2) C:\CodeBlocks\MinGW\include\GL\
+ 3) C:\CodeBlocks\MinGW\lib\gcc\mingw32\4.7.1\include\
+ 4) C:\CodeBlocks\MinGW\lib\gcc\mingw32\4.7.1\include\c++\
+-
+ Create a .BAT file in these directories,
+Write: >
+
+  ctags --c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu
+  --languages=C,C++ --langmap=C:.c.h
+  --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx.
+  --fields=+iaSm --extra=+qf -f tags *
+(above lines must be written in one line) >
+ cmd
+(End of the batch)
+-
+Trigger the batch to generate tags file.
+-
+
+Customize |_vimrc| as:
+ 1) Open |_vimrc| (C:\Program Files\vim\_vimrc) and put the lines below: >
+ set tags+=./tags;/.
+ set path+=./;/
+
+-
+
+ 2) Create a file mytags.vim or whatever you prefer
+    into C:\Program Files\vim\vim74\plugin\
+    Then write the lines below: >
+    set tags+=C:\CodeBlocks\MinGW\include\tags;
+    set tags+=C:\CodeBlocks\MinGW\lib\gcc\mingw32\4.7.1\include\tags;
+    set tags+=C:\CodeBlocks\MinGW\lib\gcc\mingw32\4.7.1\include\c++\tags;
+    set tags+=C:\CodeBlocks\MinGW\include\GL\tags;
+
+    set tags+=./tags;/.
+-
+Note the use of +=
+
+3) Now create a file myincldir.vim or whatever you prefer
+    into C:\Program Files\vim\vim74\plugin\
+    Then write the lines below: >
+    set path+=C:\CodeBlocks\MinGW\include\;
+    set path+=C:\CodeBlocks\MinGW\lib\gcc\mingw32\4.7.1\include\;
+    set path+=C:\CodeBlocks\MinGW\lib\gcc\mingw32\4.7.1\include\c++\;
+    set path+=C:\CodeBlocks\MinGW\include\GL\;
+
+    set path+=./;/
+
+-
+Note the use of += and \;
+-
+
+You can also use 'Force Now with option 3', to create tags.
+This way you can  avoid writing a batch file.
+
+==============================================================================
+TIPS						    *auto_tags_gen-Tips*
+
+If any path contains space like 'program files' then you have to write its
+equivalent SFN, otherwise Vim will not recognize the path.
+An example:
+
+C:\Program Files\ can be written as c:\progra~1\
+                                                             *path_name-SFN*
+Start cmd and type: >
+
+ cmd /c for %A in ("
+then Right-Click and paste the path.
+Note: You can paste the clipboard contents into cmd this way.
+
+now write: >
+
+ ") do @echo %~sA
+
+-
+Hit Enter. Get the SFN.
+
+Example: >
+ cmd /c for %A in ("C:\Program Files\vim\vim74") do @echo %~sA
+will give >
+ C:\PROGRA~1\vim\vim74
+-
+Note:
+We can mark the line (r-click) from the cmd and copy it by pressing the
+Enter key.
+We can convert long file name to short file name this way.
+=========================================================
+In a fairly large project directory do not update tags immediately after
+saving a file. This may take considerable time to complete.
+And the process runs at background.
+
+Rather create tags with a batch file and update tags
+when necessary. Or you can choose 'Force Now' options to create tags directly,
+if writing a separate batch file annoys you.
+
+==============================================================================
+THANKS
+
+	The following people and sites have helped me with the auto_tags_gen
+	Plug-in development, I dedicate this plug-in to them:
+
+	o  My Father, Chandra Sekhar Gupta.
+		   He gave me time to work on this project.
+	o  http://stackoverflow.com/
+		   I collected numerous tips from various pages
+		   discussed by the members.
+	o  Wikipedia.
+	o  Google.
+		   For a free of charge knowledge base.
+==============================================================================
+AUTO TAGS GEN LICENCE                            *auto_tags_gen-Licence*
+
+There is no specific licence condition.
+You can modify and distribute this plug-in for any of your interest,
+but if you modify this plug-in, you have to disclose its source code,
+and publish it at your own capacity. You can inform me, suggest me for
+the improvement of this plug-in.
+
+I cannot be held responsible for any damage/harm caused by this plug-in.
+==============================================================================
+ vim:ts=8 sw=8 noexpandtab tw=78 ft=help:

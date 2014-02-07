@@ -1,9 +1,9 @@
-// Last Change: 2013-09-10 22:59:12
+// Last Change: 2014-01-27  Monday: 02:08:00 AM
 /**< Vim plugin to create tags file silently, for the opened file's directory.
  *< Can add directory recursively. This is a shared lib plugin.
  *< Use it along with the vimscript provided.
- *< I have not tested this plugin on Linux,
- *< but you can test it on Linux.
+ *< I have not tested this plugin on OS X,
+ *< but you can test it on OS X.
  */
 #include <errno.h>
 #include <math.h>
@@ -13,9 +13,9 @@
 
 /* On Windows OS, MinGW and Tiny C are supported */
 #if  ((defined( __WIN32__ ) || defined(__WIN64__) || defined( __WINDOWS__ )) \
-     && !(defined( __MINGW32__ ) || defined( __MINGW64__ ) || defined( __TINYC__ )))
-#error  "Compiler not supported, On MS-Windows, only compilers MinGW or Tiny C are supported"
-#elif ((defined( __linux__ ) || defined( __LINUX__ )) \
+     && !(defined( __MINGW32__ ) || defined( __MINGW64__ ) || defined( __TINYC__ ) || defined( _MSC_VER )))
+#error  "Compiler not supported, On MS-Windows, only compilers MinGW, Visual Studio or Tiny C are supported"
+#elif ((defined( __linux ) || defined( __unix )) \
      && !(defined( __GNUC__ ) || defined( __GNUC_VERSION__ ) || defined( __TINYC__ )))
 #error  "Compiler not supported, On Linux, only compilers GCC or Tiny C are supported"
 #endif
@@ -27,9 +27,27 @@
  * No Linux, try modifiying it, if it does not work. */
 #if defined(__WIN32__) || defined(__WIN64__) || defined(__WINDOWS__)
 #define OS_DEP char cmd_minimize[220]="start /min cmd /c ctags ";
-#elif defined(__LINUX__)
-#define OS_DEP char cmd_minimize[220]="ctags & ";
+#elif defined(__linux)
+#define OS_DEP char cmd_minimize[220]="ctags ";
 #endif
+
+#if defined(__linux)
+#define LINUX_LAST_AMPERSAND char last_ampersand[5]=" &  ";
+#else
+#define LINUX_LAST_AMPERSAND char last_ampersand[5]="  ";
+#endif
+
+#if  defined( __WIN32__ ) || defined( __WIN64__ ) || defined( __WINDOWS__ )
+void killer(void) {
+  system("taskkill /IM cmd.exe");
+  system("taskkill /IM ctags.exe");
+}
+#elif defined( __linux )
+void killer(void) {
+  system("pkill ctags &  ");
+}
+#endif
+
 
 void auto_tag_gen_ctags(int job);
 void tag_creator_engine(int job);
@@ -42,21 +60,24 @@ void auto_tag_gen_ctags(int job) {
 
 void tag_creator_engine(int job) {
   OS_DEP
+  LINUX_LAST_AMPERSAND
   char ctags_cmd[N][200]= { /* not more than 200 characters */
-    "-R --c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx --fields=+iaSm --extra=+qf -f tags *",
-    "--c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx --fields=+iaSm --extra=+qf -f tags *",
-    "--c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx. --fields=+iaSm --extra=+qf -f tags *",
-    "-R --c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx. --fields=+iaSm --extra=+qf -f tags *",
+    "-R --c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx --fields=+iaSm --extra=+qf -f tags * ",
+    "--c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx --fields=+iaSm --extra=+qf -f tags * ",
+    "--c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx. --fields=+iaSm --extra=+qf -f tags * ",
+    "-R --c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx. --fields=+iaSm --extra=+qf -f tags * ",
   };
   job=job-1;
+  killer();
   strcat(cmd_minimize,*(ctags_cmd+job));
+  strcat(cmd_minimize,last_ampersand);
   system(cmd_minimize);/*old was:- system(*(ctags_cmd+job));*/
   /* decreasing, since array starts with 0.
             Reducing choice since the user will input one more */
 }
 
 
-/* Version 0.0.03-win32 */
+/* Version 0.0.04-win32-and-linux */
 /* NOTE: Don't use __stdcall or __fastcall or any other calling convention.
  * Use only __cdecl calling convention.
  * Don't use Dll APIENTRY point, like
