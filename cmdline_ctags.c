@@ -1,4 +1,6 @@
-// Last Change: 2014-01-27  Monday: 02:08:00 AM
+// Last Change: 2015-07-29  Wednesday: 01:13:36 PM
+/* Version 0.0.05
+ * In this version Arduino support has been included */
 /**< Vim plugin to create tags file silently, for the opened file's directory.
  *< Can add directory recursively. This is a shared lib plugin.
  *< Use it along with the vimscript provided.
@@ -61,11 +63,11 @@ void auto_tag_gen_ctags(int job) {
 void tag_creator_engine(int job) {
   OS_DEP
   LINUX_LAST_AMPERSAND
-  char ctags_cmd[N][200]= { /* not more than 200 characters */
-    "-R --c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx --fields=+iaSm --extra=+qf -f tags * ",
-    "--c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx --fields=+iaSm --extra=+qf -f tags * ",
-    "--c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx. --fields=+iaSm --extra=+qf -f tags * ",
-    "-R --c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx. --fields=+iaSm --extra=+qf -f tags * ",
+  char ctags_cmd[N][220]= { /* not more than 220 characters */
+    "-R --c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h.ino.pde --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx.ino.pde --fields=+iaSm --extra=+qf -f tags * ",
+    "--c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h.ino.pde --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx.ino.pde --fields=+iaSm --extra=+qf -f tags * ",
+    "--c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h.ino.pde --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx.ino.pde. --fields=+iaSm --extra=+qf -f tags * ",
+    "-R --c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu --languages=C,C++ --langmap=C:.c.h.ino.pde --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx.ino.pde. --fields=+iaSm --extra=+qf -f tags * ",
   };
   job=job-1;
   killer();
@@ -77,7 +79,7 @@ void tag_creator_engine(int job) {
 }
 
 
-/* Version 0.0.04-win32-and-linux */
+/* Version 0.0.05-win32-and-linux */
 /* NOTE: Don't use __stdcall or __fastcall or any other calling convention.
  * Use only __cdecl calling convention.
  * Don't use Dll APIENTRY point, like

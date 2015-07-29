@@ -64,7 +64,7 @@ the System Path, if you are using XP, otherwise follow the second method (for Wi
 
 Ubuntu users should download ctags from the software centre or via synaptic package manager.
 
-Using 7-zip extract "auto_tag_gen_v0.00.04win32.7z" to any location
+Using 7-zip extract "auto_tag_gen_v0.00.05win32.7z" to any location
 of your preference. This contains source code for the shared library and the
 makefiles for different targets and compilers, plus "auto_tag_gen.zip".
 

@@ -1,5 +1,5 @@
-" Last Change: 2014-01-27  Monday: 02:27:14 AM
-" Version 0.00.04-win32
+" Last Change: 2015-07-29  Wednesday: 01:04:47 PM
+" Version 0.00.05-win32
 " Vim plugin file
 " Maintainer: Pinaki Sekhar Gupta
 " <appugupta007@yahoo.co.in>,<appugupta007@gmail.com>

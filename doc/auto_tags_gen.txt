@@ -10,9 +10,11 @@
     Now it works on Linux. Tested in ubuntu 13.04 (Gvim from its repository).
 
 
-	Last Change: 2014-01-27  Monday: 02:27:40 AM
+	Last Change: 2015-07-29  Wednesday: 01:15:36 PM
 
-	Version 0.0.04-win32-linux (2014-01-27  Monday: 02:27:40 AM)
+	Version 0.0.05-win32-linux (2015-07-29  Wednesday: 01:15:36 PM)
+	This version supports Arduino IDE files .ino and .pde as
+	they are essentially C/C++ files and should be supported.
 
 
 	  By Pinaki Sekhar Gupta <appugupta007@yahoo.co.in>,<appugupta007@gmail.com>
@@ -106,7 +108,7 @@ the System Path, if you are using XP, otherwise follow the second method (for Wi
 Ubuntu users should download ctags from the software centre or
 via synaptic package manager.
 
-Using 7-zip extract "auto_tag_gen_v0.00.04win32.7z" to any location
+Using 7-zip extract "auto_tag_gen_v0.00.05win32.7z" to any location
 of your preference. This contains source code for the shared library and the
 makefiles for different targets and compilers, plus "auto_tag_gen.zip".
 
@@ -187,8 +189,8 @@ SETTINGS						 *auto_tags_gen-settings*
                in the working directory, as: >
       ctags -R --c-kinds=+pxfvtcdeglmnsu
       --c++-kinds=+pxfvtcdeglmnsu
-      --languages=C,C++ --langmap=C:.c.h
-      --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx
+      --languages=C,C++ --langmap=C:.c.h.ino.pde
+      --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx.ino.pde
       --fields=+iaSm --extra=+qf -f tags *
 -
               ** (In a real batch, write the lines combined into one line.)
@@ -205,8 +207,8 @@ SETTINGS						 *auto_tags_gen-settings*
 
         ctags --c-kinds=+pxfvtcdeglmnsu
         --c++-kinds=+pxfvtcdeglmnsu
-        --languages=C,C++ --langmap=C:.c.h
-        --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx.
+        --languages=C,C++ --langmap=C:.c.h.ino.pde
+        --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx.ino.pde.
         --fields=+iaSm --extra=+qf -f tags *
 -
                Notice the dot  .  at the end of .hxx in the 4th line. Also note
@@ -294,8 +296,8 @@ GUIDES TO GENERATE TAGS				     *auto_tags_gen-guides*
 Write: >
 
   ctags --c-kinds=+pxfvtcdeglmnsu --c++-kinds=+pxfvtcdeglmnsu
-  --languages=C,C++ --langmap=C:.c.h
-  --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx.
+  --languages=C,C++ --langmap=C:.c.h.ino.pde
+  --langmap=C++:.C.H.h.c.cpp.hpp.c++.cc.cp.cxx.h++.hh.hp.hxx.ino.pde.
   --fields=+iaSm --extra=+qf -f tags *
 (above lines must be written in one line) >
  cmd
