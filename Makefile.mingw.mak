@@ -54,7 +54,7 @@ clean:
 	-if exist libauto_tag_gen.a del libauto_tag_gen.a
 
 auto_tag_gen.dll: $(AUTO_TAG_GEN_OBJECTS)
-	$(CC) $(LINK_DLL_FLAGS) -fPIC -o $@ $(AUTO_TAG_GEN_OBJECTS)  -Wl,--out-implib=libauto_tag_gen.a -m32 -s $(LDFLAGS)  -luser32 -lkernel32 -lshell32 -lgdi32 -lcomctl32 -lole32  -m32
+	$(CC) $(LINK_DLL_FLAGS) -fPIC -o $@ $(AUTO_TAG_GEN_OBJECTS)  -Wl,--out-implib=libauto_tag_gen.a -mwindows -mwindows -m32 -s $(LDFLAGS)  -luser32 -lkernel32 -lshell32 -lgdi32 -lcomctl32 -lole32  -m32
 
 auto_tag_gen_cmdline_ctags.o: ./cmdline_ctags.c
 	$(CC) -c -o $@ $(AUTO_TAG_GEN_CFLAGS) $(CPPDEPS) $<

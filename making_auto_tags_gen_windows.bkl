@@ -43,7 +43,7 @@ DLL
                      <!-- if you use TDM-GCC-64 or any other version of MINGWw64 add -m32 at the last,
                          this will generate 32-bit binary for 32-bit GVIM.
                          Otherwise don't take any action -->
-
+                     <ldflags> -mwindows </ldflags>
                      <!-- <sys-lib>png</sys-lib> -->
                      <!-- <sys-lib>z</sys-lib> -->
                      <!-- <lib-path>/usr/lib/mysql</lib-path> -->
@@ -74,6 +74,8 @@ DLL
                             in real bakefile, an <option> would be used -->
                      <!-- embed manifest when building with msvc nmake -->
                                      <!-- use the name of your generated exe. look at exe id -->
+                     
+                     <ldflags> /SUBSYSTEM:windows /ENTRY:mainCRTStartup </ldflags>
                      <postlink-command> mt.exe -manifest $(id).dll.manifest -outputresource:$(id).dll;2 </postlink-command>
             </if>
   <!-- ~~~~~~~~ Compiler Specific definition Ends ~~~~~~~~~~ -->
@@ -96,13 +98,14 @@ DLL
      <!-- IMPORTANT: if not required comment the next line containing <debug-info>  -->
      <!-- <debug-info>on</debug-info>  --> <!-- IMPORTANT: on/off  -->
      <if cond="FORMAT=='mingw'">
-            <ldflags> -m32 -s</ldflags> <!-- uncomment when building release version  -->
+            <ldflags> -mwindows -m32 -s</ldflags> <!-- uncomment when building release version  -->
             <!-- if you use TDM-GCC-64 or any other version of MINGWw64 add -m32 first,
                          this will generate 32-bit binary for 32-bit GVIM.
                          Otherwise don't take any action -->
 
      </if>
      <if cond="FORMAT=='msvc'">
+             <ldflags> /SUBSYSTEM:windows /ENTRY:mainCRTStartup </ldflags>
              <postlink-command> del $(id).dll.manifest </postlink-command>
      </if>
 </dll>

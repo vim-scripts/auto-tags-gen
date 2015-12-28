@@ -10,10 +10,12 @@
     Now it works on Linux. Tested in ubuntu 13.04 (Gvim from its repository).
 
 
-	Last Change: 2015-07-29  Wednesday: 01:15:36 PM
+	Last Change: 2015-12-28  Monday: 10:35:00 PM
 
-	Version 0.0.05-win32-linux (2015-07-29  Wednesday: 01:15:36 PM)
-	This version supports Arduino IDE files .ino and .pde as
+	Version 0.0.06-win32-linux (2015-07-29  Wednesday: 01:15:36 PM)
+	In this version while saving file (Windows OS), only ctags.exe is
+	terminated, other command-line Windows are not affected.
+	Version 0.0.06-win32-linux supports Arduino IDE files .ino and .pde as
 	they are essentially C/C++ files and should be supported.
 
 

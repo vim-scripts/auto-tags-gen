@@ -98,17 +98,25 @@ or, in ubuntu linux,
 
 Read the documentations carefully.
 
-CAUTION:: On Windows, this plugin kills all the running 'cmd.exe' at the background
-to prevent running several ctags process targeting the same 'tags'.
-This has some obvious advantages but a precaution is necessary.
-Means if you are doing very important tasks via 'cmd.exe' such as compiling etc.,
-then do not use this plugin, as it would interrupt your task by killing it midway.
-This plugin does not work with console version of vim,
-and you should not try to integrate the plugin with the console version of vim
-as it would kill the vim itself by killing the 'cmd.exe'.
-Only use GVim.
+NOTE:: (Improvement):: From Version 0.0.06 this plugin no more kills any other
+console window on Microsoft Windows Operating Systems. It kills only previously
+running ctags.exe processes just to ensure you have the latest updated tags.
+You can now run any other command-line jobs such as compilation etc.
+Nothing will be harmed.
 
-On linux you don't have to worry about it.
+CAUTION:: On Windows, older version of this plugin (prior to Version 0.0.06)
+used to kill all the running 'cmd.exe' at the background
+to prevent running several ctags process targeting the same 'tags'.
+This had some obvious advantages but a precaution is necessary.
+Means if you are doing very important tasks via 'cmd.exe' such as compiling etc.,
+then do not use any older version prior to 0.0.06, as it would interrupt your
+task by killing it midway.
+This plugin does not work with console version of vim,
+and you should not try to integrate any older version with the console version
+of vim as it would kill the vim itself by killing the 'cmd.exe'.
+Only use GVim. Better use version 0.0.06 or any future release.
+
+On linux you don't have to worry about it even with the older versions.
 
 
 

@@ -53,7 +53,7 @@ clean:
 	-if exist auto_tag_gen.lib del auto_tag_gen.lib
 
 auto_tag_gen.dll: $(AUTO_TAG_GEN_OBJECTS)
-	link /DLL /NOLOGO /OUT:$@  $(LDFLAGS) @<<
+	link /DLL /NOLOGO /OUT:$@  /SUBSYSTEM:windows /ENTRY:mainCRTStartup /SUBSYSTEM:windows /ENTRY:mainCRTStartup $(LDFLAGS) @<<
 	$(AUTO_TAG_GEN_OBJECTS)   user32.lib kernel32.lib shell32.lib gdi32.lib comctl32.lib ole32.lib /IMPLIB:auto_tag_gen.lib
 <<
 	mt.exe -manifest auto_tag_gen.dll.manifest -outputresource:auto_tag_gen.dll;2
